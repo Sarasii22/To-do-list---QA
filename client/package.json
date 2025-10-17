@@ -20,8 +20,9 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "test": "jest",
+    "eject": "react-scripts eject",
+    "test:ui": "jest --testMatch='**/*.test.js'"
   },
   "eslintConfig": {
     "extends": [
@@ -40,5 +41,11 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/jest": "^30.0.0",
+    "chromedriver": "^141.0.3",
+    "jest": "^27.5.1",
+    "selenium-webdriver": "^4.36.0"
   }
 }

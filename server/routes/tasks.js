@@ -1,9 +1,8 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
-const Task = require('../models/Task');
+const { tasks } = require('../data');  // Import shared
 const router = express.Router();
 
-// Middleware for auth
 const auth = (req, res, next) => {
   const token = req.header('Authorization')?.replace('Bearer ', '');
   if (!token) return res.status(401).json({ message: 'No token' });
@@ -16,17 +15,15 @@ const auth = (req, res, next) => {
   }
 };
 
-// Get tasks
-router.get('/', auth, async (req, res) => {
-  const tasks = await Task.find({ user: req.user.id });
-  res.json(tasks);
+router.get('/', auth, (req, res) => {
+  const userTasks = tasks.filter(t => t.userId === req.user.id);
+  res.json(userTasks);
 });
 
-// Add task
-router.post('/', auth, async (req, res) => {
-  const task = new Task({ ...req.body, user: req.user.id });
-  await task.save();
-  res.json(task);
+router.post('/', auth, (req, res) => {
+  const newTask = { id: tasks.length + 1, ...req.body, userId: req.user.id, completed: false };
+  tasks.push(newTask);
+  res.json(newTask);
 });
 
 module.exports = router;
