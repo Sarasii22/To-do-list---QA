@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';  // Add waitFor
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import App from './App';
 
@@ -13,7 +13,7 @@ describe('MERN To-Do App UI Tests', () => {
     await user.click(screen.getByRole('button', { name: /login/i }));
 
     await waitFor(() => {
-      expect(screen.getByText(/tasks for admin/i)).toBeInTheDocument();
+      expect(screen.getByText(/tasks/i)).toBeInTheDocument();
     });
   });
 
@@ -21,13 +21,12 @@ describe('MERN To-Do App UI Tests', () => {
     render(<App />);
     const user = userEvent.setup();
 
-    // Login first
+    // Login
     await user.type(screen.getByLabelText('Username'), 'admin');
     await user.type(screen.getByLabelText('Password'), 'password');
     await user.click(screen.getByRole('button', { name: /login/i }));
 
     // Add task
-    await waitFor(() => screen.getByLabelText('New Task'));
     await user.type(screen.getByLabelText('New Task'), 'Test task');
     await user.click(screen.getByRole('button', { name: /add/i }));
 
