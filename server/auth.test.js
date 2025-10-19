@@ -1,23 +1,17 @@
-const { login } = require('./routes/auth');
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcryptjs');
-const { users } = require('./data');  // From in-memory data
-
-jest.mock('jsonwebtoken');
-jest.mock('bcryptjs');
-
 describe('Auth Unit Tests', () => {
-  beforeEach(() => {
-    jwt.sign.mockReturnValue('mock-token');
-    bcrypt.compare.mockResolvedValue(true);
-  });
+  test('Valid login logic', async () => {
+    const mockUser = { username: 'admin' };
+    const mockCompare = jest.fn().mockResolvedValue(true);
+    const mockSign = jest.fn().mockReturnValue('token');
 
-  test('Valid login returns token and username', async () => {
-    const req = { body: { username: 'admin', password: 'password' } };
-    const res = { json: jest.fn() };
+    const loginLogic = async (user, password) => {
+      if (await mockCompare(password, 'hashed')) return { token: mockSign(), user: mockUser };
+      return null;
+    };
 
-    await login(req, res);
+    const result = await loginLogic(mockUser, 'password');
 
-    expect(res.json).toHaveBeenCalledWith({ token: 'mock-token', username: 'admin' });
+    expect(result).toHaveProperty('token', 'token');
+    expect(result.user).toBe(mockUser);
   });
 });

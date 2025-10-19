@@ -23,7 +23,7 @@ const Login = ({ onLogin }) => {
   return (
     <Container maxWidth="sm">
       <Typography variant="h4">Login</Typography>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} data-testid="login-form">
         <TextField fullWidth label="Username" value={username} onChange={(e) => setUsername(e.target.value)} />
         <TextField fullWidth label="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
         <Button type="submit" variant="contained">Login</Button>
