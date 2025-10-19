@@ -29,7 +29,7 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={token ? <Navigate to="/tasks" /> : <Login onLogin={handleLogin} />} />
+        <Route path="/" element={token ? <Navigate to="/login" /> : <Login onLogin={handleLogin} />} />
         <Route path="/login" element={<Login onLogin={handleLogin} />} />
         <Route path="/tasks" element={token ? <Tasks user={user} logout={logout} /> : <Navigate to="/login" />} />
       </Routes>

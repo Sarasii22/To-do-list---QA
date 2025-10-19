@@ -7,8 +7,15 @@ const Tasks = ({ user, logout }) => {
   const [description, setDescription] = useState('');
 
   useEffect(() => {
-    fetchTasks();
-  }, []);
+  const token = localStorage.getItem('token');
+  if (token) {
+    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+  } else {
+    // Redirect to login if no token
+    window.location.href = '/login';
+  }
+  fetchTasks();
+}, []);
 
   const fetchTasks = async () => {
     const res = await axios.get('http://localhost:5000/api/tasks');
@@ -16,11 +23,14 @@ const Tasks = ({ user, logout }) => {
   };
 
   const addTask = async (e) => {
-    e.preventDefault();
-    await axios.post('http://localhost:5000/api/tasks', { description });
-    setDescription('');
-    fetchTasks();
-  };
+  e.preventDefault();
+  const token = localStorage.getItem('token');
+  await axios.post('http://localhost:5000/api/tasks', { description }, {
+    headers: { Authorization: `Bearer ${token}` }
+  });
+  setDescription('');
+  fetchTasks();
+};
 
   return (
     <Container>
