@@ -22,14 +22,50 @@ const Tasks = ({ user, logout }) => {
     setTasks(res.data);
   };
 
-  const addTask = async (e) => {
+  //before
+  /*const addTask = async (e) => {
+  e.preventDefault();
+  const token = localStorage.getItem('token');  // Get token
+  if (!token) {
+    alert('Please login again');
+    return;
+  }
+  try {
+    await axios.post('http://localhost:5000/api/tasks', { description }, {
+      headers: { Authorization: `Bearer ${token}` }  // Explicit header
+    });
+    setDescription('');
+    fetchTasks();
+  } catch (err) {
+    if (err.response.status === 401) {
+      alert('Token expired—login again');
+      localStorage.removeItem('token');
+      window.location.href = '/login';
+    }
+  }*/
+
+    //after - with error handling
+    const addTask = async (e) => {
   e.preventDefault();
   const token = localStorage.getItem('token');
-  await axios.post('http://localhost:5000/api/tasks', { description }, {
-    headers: { Authorization: `Bearer ${token}` }
-  });
-  setDescription('');
-  fetchTasks();
+  if (!token) {
+    alert('Please login again');
+    return;
+  }
+  try {
+    await axios.post('http://localhost:5000/api/tasks', { description }, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    setDescription('');
+    fetchTasks();
+  } catch (err) {
+    if (err.response.status === 401) {
+      alert('Token expired—login again');
+      localStorage.removeItem('token');
+      window.location.href = '/login';
+    }
+  }
+
 };
 
   return (

@@ -6,14 +6,14 @@ dotenv.config();
 
 const app = express();  // Define app first
 
-//Fix 1: A07 - Add Rate Limiting & Strong Secret
+//after defining app, set up rate limiting
 const rateLimit = require('express-rate-limit');
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 mins
   max: 5, // 5 attempts
   message: 'Too many login attempts, try again later'
 });
-app.use('/api/auth/login', limiter);  // Now after app
+app.use('/api/auth/login', limiter);  // Blocks after 5
 
 app.use(cors());
 app.use(express.json());
