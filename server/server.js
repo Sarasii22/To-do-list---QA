@@ -6,6 +6,7 @@ dotenv.config();
 
 const app = express();  // Define app first
 
+//Fix 1: A07 - Add Rate Limiting & Strong Secret
 const rateLimit = require('express-rate-limit');
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 mins
