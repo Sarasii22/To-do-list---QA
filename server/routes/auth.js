@@ -27,4 +27,6 @@ router.post('/register', async (req, res) => {
   res.json({ message: 'User created' });
 });
 
-module.exports = { router, login };  // Export login for test
+//module.exports = { router, login };  // Export login for test
+
+module.exports = router;
