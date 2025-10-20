@@ -1,17 +1,19 @@
 describe('Auth Unit Tests', () => {
-  test('Valid login logic', async () => {
+  test('Valid login logic', () => {
     const mockUser = { username: 'admin' };
-    const mockCompare = jest.fn().mockResolvedValue(true);
-    const mockSign = jest.fn().mockReturnValue('token');
+    const mockPassword = 'password';
+    const mockHashed = '$2b$10$mockhash';
 
-    const loginLogic = async (user, password) => {
-      if (await mockCompare(password, 'hashed')) return { token: mockSign(), user: mockUser };
+    const loginLogic = (user, password, hashed) => {
+      if (password === 'password' && hashed === mockHashed) {
+        return { token: 'mock-token', username: user.username };
+      }
       return null;
     };
 
-    const result = await loginLogic(mockUser, 'password');
+    const result = loginLogic(mockUser, mockPassword, mockHashed);
 
-    expect(result).toHaveProperty('token', 'token');
-    expect(result.user).toBe(mockUser);
+    expect(result).toHaveProperty('token', 'mock-token');
+    expect(result.username).toBe('admin');
   });
 });

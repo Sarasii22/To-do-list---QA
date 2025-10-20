@@ -1,16 +1,15 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 
 const MockLogin = ({ onLogin }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
-    onLogin('admin', 'mock-token');
+    onLogin('admin', 'token');
   };
 
   return (
     <form onSubmit={handleSubmit}>
-      <input value="admin" onChange={() => {}} />
-      <input value="password" onChange={() => {}} />
+      <input />
       <button type="submit">Login</button>
     </form>
   );
@@ -25,6 +24,6 @@ describe('Login Component Unit Tests', () => {
     const button = document.querySelector('button[type="submit"]');
     button.click();
 
-    expect(mockOnLogin).toHaveBeenCalledWith('admin', 'mock-token');
+    expect(mockOnLogin).toHaveBeenCalledWith('admin', 'token');
   });
 });
