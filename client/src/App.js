@@ -4,7 +4,7 @@ import Login from './components/Login';
 import Tasks from './components/Tasks';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-
+// Demo comment for CI trigger
 function App() {
   const [token, setToken] = useState(localStorage.getItem('token'));
   const [user, setUser] = useState('');
