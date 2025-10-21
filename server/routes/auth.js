@@ -8,7 +8,7 @@ const login = async (req, res) => {  // Add this function
   const { username, password } = req.body;
   const user = users.find(u => u.username === username);
   if (user && await bcrypt.compare(password, user.password)) {
-    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1m' });
+    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
     res.json({ token, username: user.username });
   } else {
     res.status(401).json({ message: 'Invalid credentials' });

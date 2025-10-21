@@ -23,13 +23,21 @@ router.get('/', auth, (req, res) => {
   const userTasks = tasks.filter(t => t.userId === req.user.id);
   res.json(userTasks);
 });
-/*
+
 //before
+/*
+const { body, validationResult } = require('express-validator');
+
 router.post('/', auth, (req, res) => {
-  const newTask = { id: tasks.length + 1, ...req.body, userId: req.user.id, completed: false };
+  const { description } = req.body;
+  if (!description || description.trim().length < 1 || description.length > 500) {
+    return res.status(400).json({ message: 'Invalid description' });
+  }
+  const newTask = { id: tasks.length + 1, description: description.trim(), userId: req.user.id, completed: false };
   tasks.push(newTask);
   res.json(newTask);
-});*/
+});
+*/
 
 //after - with validation
 const { body, validationResult } = require('express-validator');
@@ -41,9 +49,9 @@ router.post('/', auth, [
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
   }
-  const task = new Task({ ...req.body, user: req.user.id });
-  await task.save();
-  res.json(task);
+  const newTask = { id: tasks.length + 1, description: req.body.description.trim(), userId: req.user.id, completed: false };
+  tasks.push(newTask);
+  res.json(newTask);
 });
 
 module.exports = router;
