@@ -20,8 +20,7 @@ describe('Login Component Unit Tests', () => {
     const mockOnLogin = jest.fn();
     render(<MockLogin onLogin={mockOnLogin} />);
 
-    const form = document.querySelector('form');
-    const button = document.querySelector('button[type="submit"]');
+    const button = screen.getByRole('button', { type: 'submit' });
     button.click();
 
     expect(mockOnLogin).toHaveBeenCalledWith('admin', 'token');
