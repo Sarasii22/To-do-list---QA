@@ -11,31 +11,44 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4  # Clone repo
+    # Step 1: Checkout repository
+    - uses: actions/checkout@v4
 
+    # Step 2: Setup Node.js environment
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: '20'  # Node version
+        node-version: '20'
 
+    # Step 3: Backend Build & Test
     - name: Backend Build & Test
       run: |
         cd server
         npm ci
         npm test -- --coverage
 
+    # Step 4: Frontend Build & Test
     - name: Frontend Build & Test
       run: |
         cd client
         npm ci
         npm test
 
+    # Step 5: SonarCloud Scan
     - name: SonarCloud Scan
       uses: SonarSource/sonarqube-scan-action@v5.0.0
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        args: >
+          -Dsonar.projectKey=ssuor2001_To-do-list---QA
+          -Dsonar.organization=ssuor2001
+          -Dsonar.sourceEncoding=UTF-8
+          -Dsonar.javascript.lcov.reportPaths=server/coverage/lcov.info,client/coverage/lcov.info
+          -Dsonar.exclusions=**/node_modules/**,**/dist/**,**/build/**
 
+    # Step 6: Upload Test Reports (if fail)
     - name: Upload Test Reports (if fail)
       if: always()
       uses: actions/upload-artifact@v4
